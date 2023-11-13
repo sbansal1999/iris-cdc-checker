@@ -81,6 +81,18 @@ async function setCompaniesToDB(companies) {
     .insert(companies.map((company) => ({ name: company })));
 }
 
+async function getEmailsFromDB() {
+  try {
+    const data = await (await supabase.from("emails").select()).data;
+    const emails = data.map((obj) => obj.email);
+    return emails;
+  }
+  catch (error) {
+    console.log("some error" + error);
+    return error;
+  }
+}
+
 app.get("/scrape", async (req, res) => {
   try {
     const currentListedCompanies = await getCurrentListedCompanies();
@@ -96,7 +108,8 @@ app.get("/scrape", async (req, res) => {
 
     if (newCompanies.length > 0) {
       await setCompaniesToDB(currentListedCompanies);
-      const emails = process.env.MY_EMAIL.split(",");
+      const emails = await getEmailsFromDB();
+      console.log(emails);
       emails.forEach(async (email) => {
         console.log("sending email to " + email);
         await resend.emails.send({
