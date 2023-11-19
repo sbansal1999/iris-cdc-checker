@@ -110,17 +110,15 @@ app.get("/scrape", async (req, res) => {
       await setCompaniesToDB(currentListedCompanies);
       const emails = await getEmailsFromDB();
       console.log(emails);
-      emails.forEach(async (email) => {
-        console.log("sending email to " + email);
+      for (const email of emails) {
         await resend.emails.send({
           from: "Iris-CDC-Checker <iris-cdc-checker@mindfuelclub.tech>",
           to: [email],
           subject: "Yoo IRIS has new companies!",
           text: `Check out the new companies at IRIS: ${newCompanies}`,
         });
-      });
+      };
     }
-
     res.json(newCompanies);
   } catch (error) {
     res.status(500).json({ error: error.message });
