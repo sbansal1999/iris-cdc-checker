@@ -128,6 +128,18 @@ app.get("/scrape", async (req, res) => {
     console.log(newInternshipCompanies);
 
     if (newPlacementCompanies.length > 0 || newInternshipCompanies.length > 0) {
+      const placementMessage = `
+      New placement companies: ${newPlacementCompanies}
+      `;
+      const internshipMessage = `
+      New internship companies: ${newInternshipCompanies}
+      `;
+
+      const finalMessage = `
+      ${newPlacementCompanies.length > 0 ? placementMessage : ""}
+      ${newInternshipCompanies.length > 0 ? internshipMessage : ""}
+      `;
+
       await setCompaniesToDB(currentListedPlacementCompanies);
       await setCompaniesToDB(currentListedInternshipCompanies, true);
       const emails = await getEmailsFromDB();
@@ -137,7 +149,7 @@ app.get("/scrape", async (req, res) => {
           from: "Iris-CDC-Checker <iris-cdc-checker@mindfuelclub.tech>",
           to: [email],
           subject: "Yoo IRIS has new companies!",
-          text: `Check out the new placement companies at IRIS: ${newPlacementCompanies} \n\n Check out the new internship companies at IRIS: ${newInternshipCompanies}`,
+          text: finalMessage,
         });
       }
     }
