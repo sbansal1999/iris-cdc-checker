@@ -18,7 +18,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const placementCompaniesTable = "placement_companies";
 const internshipCompaniesTable = "internship_companies";
 
-async function getCurrentListedCompaniesByCookie(cookie) {
+async function getCurrentListedCompanies(internship = false) {
   try {
     const websiteData = await axios.get(
       "https://iris.nitk.ac.in/hrms/placement/dashboard",
@@ -39,7 +39,7 @@ async function getCurrentListedCompaniesByCookie(cookie) {
           "sec-fetch-site": "same-origin",
           "sec-fetch-user": "?1",
           "upgrade-insecure-requests": "1",
-          cookie: cookie,
+          cookie: internship ? process.env.IRIS_INTERNSHIP_COOKIE : process.env.IRIS_PLACEMENT_COOKIE,
           Referer: "https://iris.nitk.ac.in/hrms/",
           "Referrer-Policy": "strict-origin-when-cross-origin",
         },
@@ -104,10 +104,7 @@ async function getEmailsFromDB() {
 
 app.get("/scrape", async (req, res) => {
   try {
-    const currentListedPlacementCompanies =
-      await getCurrentListedCompaniesByCookie(
-        process.env.IRIS_PLACEMENT_COOKIE
-      );
+    const currentListedPlacementCompanies = await getCurrentListedCompanies();
     const storedPlacementCompanies = await getCompaniesFromDB();
     const newPlacementCompanies = currentListedPlacementCompanies.filter(
       (company) => !storedPlacementCompanies.includes(company)
@@ -118,10 +115,7 @@ app.get("/scrape", async (req, res) => {
     console.log(newPlacementCompanies);
     console.log(process.env.IRIS_PLACEMENT_COOKIE);
 
-    const currentListedInternshipCompanies =
-      await getCurrentListedCompaniesByCookie(
-        process.env.IRIS_INTERNSHIP_COOKIE
-      );
+    const currentListedInternshipCompanies =await getCurrentListedCompanies(true);
     const storedInternshipCompanies = await getCompaniesFromDB(true);
     const newInternshipCompanies = currentListedInternshipCompanies.filter(
       (company) => !storedInternshipCompanies.includes(company)
