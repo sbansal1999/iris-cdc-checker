@@ -116,6 +116,10 @@ app.get("/scrape", async (req, res) => {
       (company) => !storedPlacementCompanies.includes(company)
     );
 
+    console.log(currentListedPlacementCompanies);
+    console.log(storedPlacementCompanies);
+    console.log(newPlacementCompanies);
+
     const currentListedInternshipCompanies =
       await getCurrentListedCompaniesByCookie(
         process.env.IRIS_INTERNSHIP_COOKIE
