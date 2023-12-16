@@ -57,9 +57,12 @@ async function getCurrentListedCompanies(internship = false) {
       currentCompanies.push(company);
     });
 
+    console.log(currentCompanies);
+
     return currentCompanies;
 
   } catch (error) {
+    console.log(error);
     return error;
   }
 }
