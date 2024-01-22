@@ -24,24 +24,7 @@ async function getCurrentListedCompanies(internship = false) {
       "https://iris.nitk.ac.in/hrms/placement/dashboard",
       {
         headers: {
-          accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-          "accept-language":
-            "en-IN,en;q=0.9,hi-IN;q=0.8,hi;q=0.7,en-GB;q=0.6,en-US;q=0.5,ar;q=0.4,ru;q=0.3",
-          "cache-control": "no-cache",
-          pragma: "no-cache",
-          "sec-ch-ua":
-            '"Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"',
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": '"Linux"',
-          "sec-fetch-dest": "document",
-          "sec-fetch-mode": "navigate",
-          "sec-fetch-site": "same-origin",
-          "sec-fetch-user": "?1",
-          "upgrade-insecure-requests": "1",
           cookie: internship ? process.env.IRIS_INTERNSHIP_COOKIE : process.env.IRIS_PLACEMENT_COOKIE,
-          Referer: "https://iris.nitk.ac.in/hrms/",
-          "Referrer-Policy": "strict-origin-when-cross-origin",
         },
         body: null,
         method: "GET",
