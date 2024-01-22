@@ -124,7 +124,10 @@ app.get("/scrape", async (req, res) => {
       (company) => !storedInternshipCompanies.includes(company)
     );
 
+    console.log(currentListedInternshipCompanies);
+    console.log(storedInternshipCompanies);
     console.log(newInternshipCompanies);
+    console.log(process.env.IRIS_INTERNSHIP_COOKIE);
 
     if (newPlacementCompanies.length > 0 || newInternshipCompanies.length > 0) {
       const placementMessage = `
