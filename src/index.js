@@ -132,14 +132,17 @@ app.get("/scrape", async (req, res) => {
       await setCompaniesToDB(currentListedInternshipCompanies, true);
       const emails = await getEmailsFromDB();
       console.log(emails);
-      for (const email of emails) {
-        await resend.emails.send({
+      const arr = emails.map((email) => {
+        return {
           from: "Iris-CDC-Checker <iris-cdc-checker@mindfuelclub.tech>",
           to: [email],
           subject: "Yoo IRIS has new companies!",
           text: finalMessage,
-        });
-      }
+        };
+      });
+
+      const data = await resend.emails.batch.send(arr);
+      console.log(data);
     }
     res.json(newPlacementCompanies);
   } catch (error) {
