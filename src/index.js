@@ -24,7 +24,9 @@ async function getCurrentListedCompanies(internship = false) {
       "https://iris.nitk.ac.in/hrms/placement/dashboard",
       {
         headers: {
-          cookie: internship ? process.env.IRIS_INTERNSHIP_COOKIE : process.env.IRIS_PLACEMENT_COOKIE,
+          cookie: internship
+            ? process.env.IRIS_INTERNSHIP_COOKIE
+            : process.env.IRIS_PLACEMENT_COOKIE,
         },
         body: null,
         method: "GET",
@@ -43,7 +45,6 @@ async function getCurrentListedCompanies(internship = false) {
     console.log(currentCompanies);
 
     return currentCompanies;
-
   } catch (error) {
     console.log(error);
     return error;
@@ -101,7 +102,9 @@ app.get("/scrape", async (req, res) => {
     console.log(newPlacementCompanies);
     console.log(process.env.IRIS_PLACEMENT_COOKIE);
 
-    const currentListedInternshipCompanies =await getCurrentListedCompanies(true);
+    const currentListedInternshipCompanies = await getCurrentListedCompanies(
+      true
+    );
     const storedInternshipCompanies = await getCompaniesFromDB(true);
     const newInternshipCompanies = currentListedInternshipCompanies.filter(
       (company) => !storedInternshipCompanies.includes(company)
