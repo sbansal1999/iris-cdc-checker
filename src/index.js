@@ -42,8 +42,6 @@ async function getCurrentListedCompanies(internship = false) {
       currentCompanies.push(company);
     });
 
-    console.log(currentCompanies);
-
     return currentCompanies;
   } catch (error) {
     console.log(error);
@@ -100,7 +98,6 @@ app.get("/scrape", async (req, res) => {
     console.log(currentListedPlacementCompanies);
     console.log(storedPlacementCompanies);
     console.log(newPlacementCompanies);
-    console.log(process.env.IRIS_PLACEMENT_COOKIE);
 
     const currentListedInternshipCompanies = await getCurrentListedCompanies(
       true
@@ -113,7 +110,6 @@ app.get("/scrape", async (req, res) => {
     console.log(currentListedInternshipCompanies);
     console.log(storedInternshipCompanies);
     console.log(newInternshipCompanies);
-    console.log(process.env.IRIS_INTERNSHIP_COOKIE);
 
     if (newPlacementCompanies.length > 0 || newInternshipCompanies.length > 0) {
       const placementMessage = `
@@ -131,7 +127,6 @@ app.get("/scrape", async (req, res) => {
       await setCompaniesToDB(currentListedPlacementCompanies);
       await setCompaniesToDB(currentListedInternshipCompanies, true);
       const emails = await getEmailsFromDB();
-      console.log(emails);
       const arr = emails.map((email) => {
         return {
           from: "Iris-CDC-Checker <iris-cdc-checker@mindfuelclub.tech>",
