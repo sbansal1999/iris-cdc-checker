@@ -141,7 +141,7 @@ app.get("/scrape", async (req, res) => {
         };
       });
 
-      const data = await resend.emails.batch.send(arr);
+      const data = await resend.batch.send(arr);
       console.log(data);
     }
     res.json(newPlacementCompanies);
